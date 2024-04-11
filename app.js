@@ -16,6 +16,10 @@ app.get('/', (req, res) => {
   res.send('Bienvenido a la API - Juan Pablo Restrepo');
 });
 
+app.get('/users', (req,res) => {
+res.send('Digite en el body el contenido a actualizar');
+});
+
 
 app.get('/*', (req, res) => {
     res.send('Bienvenido a la API - Juan Pablo Restrepo');
