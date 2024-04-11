@@ -36,17 +36,14 @@ const users = [
 
 router.get('/:count', (req, res) => {
     const count = parseInt(req.params.count, 10) || 10;
-    let sortOrder = req.query.sort || 'ASC';
+    let sortOrder = (req.query.sort || 'ASC').toUpperCase();
 
-    // Validar el parámetro de orden
     if (!['ASC', 'DESC'].includes(sortOrder)) {
         return res.status(400).send('Parámetro de organización inválido. Utilice "ASC" o "DESC".');
     }
 
-    // Ordenar la lista de usuarios
-    let sortedUsers = [...users]; // Clonar la lista de usuarios para evitar modificar la original
+    let sortedUsers = [...users]; 
     sortedUsers.sort((a, b) => {
-        // Convertir ambos apellidos a minúsculas antes de comparar
         const lastNameA = a.last_name.toLowerCase();
         const lastNameB = b.last_name.toLowerCase();
 
@@ -57,20 +54,16 @@ router.get('/:count', (req, res) => {
         }
     });
 
-    // Obtener el índice de inicio y final basado en el orden
     let startIndex = sortOrder === 'ASC' ? 0 : Math.max(sortedUsers.length - count, 0);
     let endIndex = Math.min(startIndex + count, sortedUsers.length);
 
-    // Filtrar la lista según el índice de inicio y final
     let limitedUsers = sortedUsers.slice(startIndex, endIndex);
 
-    // Crear una cadena de salida
     let output = 'Lista de usuarios:\n\n';
     limitedUsers.forEach(user => {
         output += `${user.first_name} ${user.last_name}\n`;
     });
 
-    // Enviar la respuesta con la cadena de salida
     res.type('text').send(output);
 });
 
