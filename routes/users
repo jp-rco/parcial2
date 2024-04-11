@@ -36,32 +36,40 @@ const users = [
 
 router.get('/:count', (req, res) => {
     const count = parseInt(req.params.count, 10) || 10;
-    const sort = req.query.sort || 'ASC';
-  
-    if (sort !== 'ASC' && sort !== 'DESC') {
-      return res.status(400).send('Parametro de organización inválido. Use "ASC" o "DESC".');
+    let sortOrder = req.query.sort || 'ASC';
+
+    // Validar el parámetro de orden
+    if (!['ASC', 'DESC'].includes(sortOrder)) {
+        return res.status(400).send('Parámetro de organización inválido. Utilice "ASC" o "DESC".');
     }
-  
-    let sortedResult = [...users]; 
-    sortedResult.sort((a, b) => {
-      if (sort === 'ASC') {
-        return a.last_name.localeCompare(b.last_name);
-      } else if (sort === 'DESC') {
-        return b.last_name.localeCompare(a.last_name);
-      }
+
+    // Ordenar la lista de usuarios
+    let sortedUsers = [...users]; // Clonar la lista de usuarios para evitar modificar la original
+    sortedUsers.sort((a, b) => {
+        if (sortOrder === 'ASC') {
+            return a.last_name.localeCompare(b.last_name);
+        } else {
+            return b.last_name.localeCompare(a.last_name);
+        }
     });
-  
-    const startIndex = sort === 'ASC' ? 0 : sortedResult.length - count;
-    const endIndex = startIndex + count;
-    sortedResult = sortedResult.slice(startIndex, endIndex); 
-  
-    let output = 'Listado de usuarios:\n\n';
-    sortedResult.forEach(user => {
-      output += `${user.first_name} ${user.last_name}\n`;
+
+    // Obtener el índice de inicio y final basado en el orden
+    let startIndex = sortOrder === 'ASC' ? 0 : Math.max(sortedUsers.length - count, 0);
+    let endIndex = Math.min(startIndex + count, sortedUsers.length);
+
+    // Filtrar la lista según el índice de inicio y final
+    let limitedUsers = sortedUsers.slice(startIndex, endIndex);
+
+    // Crear una cadena de salida
+    let output = 'Lista de usuarios:\n\n';
+    limitedUsers.forEach(user => {
+        output += `${user.first_name} ${user.last_name}\n`;
     });
-  
+
+    // Enviar la respuesta con la cadena de salida
     res.type('text').send(output);
-  });
+});
+
   
   
   
