@@ -39,11 +39,10 @@ router.get('/:count', (req, res) => {
     const sort = req.query.sort || 'ASC';
   
     if (sort !== 'ASC' && sort !== 'DESC') {
-      return res.status(400).send('Invalid sort parameter. Use "ASC" or "DESC".');
+      return res.status(400).send('Parametro de organización inválido. Use "ASC" o "DESC".');
     }
   
-    let sortedResult = [...users]; // Clonar la lista completa de usuarios
-  
+    let sortedResult = [...users]; 
     sortedResult.sort((a, b) => {
       if (sort === 'ASC') {
         return a.last_name.localeCompare(b.last_name);
@@ -54,7 +53,7 @@ router.get('/:count', (req, res) => {
   
     const startIndex = sort === 'ASC' ? 0 : sortedResult.length - count;
     const endIndex = startIndex + count;
-    sortedResult = sortedResult.slice(startIndex, endIndex); // Obtener los primeros 'count' estudiantes
+    sortedResult = sortedResult.slice(startIndex, endIndex); 
   
     let output = 'Listado de usuarios:\n\n';
     sortedResult.forEach(user => {

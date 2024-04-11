@@ -13,12 +13,12 @@ router.get('/:coinName', async (req, res) => {
   try {
     const response = await axios.get(`${coinCapApiUrl}/assets/${coinName}`);
     const priceUsd = response.data.data.priceUsd;
-    res.status(200).send(`The price in dollars of ${coinName} for today is $${priceUsd}`);
+    res.status(200).send(`El precio en dólares de ${coinName} para hoy es: $${priceUsd}`);
   } catch (error) {
     if (error.response.status === 404) {
-      res.status(404).send(`The name of the coin "${coinName}" was not found in the database`);
+      res.status(404).send(`El nombre de moneda "${coinName}" no fue encontrado en la base de datos`);
     } else {
-      res.status(500).send('Something went wrong');
+      res.status(500).send('Ups, algo salió mal');
     }
   }
 });
