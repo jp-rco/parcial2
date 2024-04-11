@@ -21,6 +21,10 @@ app.get('/users', (req, res) => {
   res.sendFile(__dirname + '/index.html');
 });
 
+app.get('/*', (req, res) => {
+    res.send('Bienvenido a la API - Juan Pablo Restrepo');
+  });
+
 app.post('/users', (req, res) => {
     let usuario = req.body;
     
