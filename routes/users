@@ -46,10 +46,14 @@ router.get('/:count', (req, res) => {
     // Ordenar la lista de usuarios
     let sortedUsers = [...users]; // Clonar la lista de usuarios para evitar modificar la original
     sortedUsers.sort((a, b) => {
+        // Convertir ambos apellidos a minúsculas antes de comparar
+        const lastNameA = a.last_name.toLowerCase();
+        const lastNameB = b.last_name.toLowerCase();
+
         if (sortOrder === 'ASC') {
-            return a.last_name.localeCompare(b.last_name);
+            return lastNameA.localeCompare(lastNameB);
         } else {
-            return b.last_name.localeCompare(a.last_name);
+            return lastNameB.localeCompare(lastNameA);
         }
     });
 
@@ -69,6 +73,7 @@ router.get('/:count', (req, res) => {
     // Enviar la respuesta con la cadena de salida
     res.type('text').send(output);
 });
+
 
   
   
