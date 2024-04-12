@@ -69,11 +69,11 @@ router.get('/:count', (req, res) => {
 });
 
 router.post('/', (req, res) => {
-    const { first_name, last_name, email, city = 'Bogotá', country = 'Colombia' } = req.body;
+    const {name, lastName, email, city = 'Bogotá', country = 'Colombia' } = req.body;
 
     const user = {
-        first_name,
-        last_name,
+        name,
+        lastName,
         email,
         city,
         country
@@ -82,6 +82,5 @@ router.post('/', (req, res) => {
     res.status(200).json(user);
     console.log(user)
 });
-
   
 module.exports = router;
